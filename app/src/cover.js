@@ -241,8 +241,12 @@ function drawTitleBlock(ctx, state, W, H) {
   ctx.fillText(title, r.x + r.w / 2, ty);
   ctx.restore();
   const tag = (state.tagline || '').trim();
-  const subSize = Math.max(10, r.w * 0.052);
+  let subSize = Math.max(10, r.w * 0.052);
   ctx.font = `700 ${subSize}px Arial, sans-serif`;
+  while (tag && ctx.measureText(tag).width > r.w * 0.86 && subSize > 8) {
+    subSize *= 0.92;
+    ctx.font = `700 ${subSize}px Arial, sans-serif`;
+  }
   ctx.fillStyle = '#ffffff';
   if (tag) ctx.fillText(tag, r.x + r.w / 2, r.y + r.h * 0.68);
   let bottom = tag ? r.y + r.h * 0.82 : r.y + r.h * 0.68;
@@ -307,12 +311,16 @@ function drawTitleBand(ctx, state, W, H, bandY, bandH) {
   ctx.fillText(title, pad, ty);
   ctx.restore();
   const tag = (state.tagline || '').trim();
-  const subSize = Math.max(11, bandH * 0.20);
+  let subSize = Math.max(11, bandH * 0.20);
   ctx.font = `700 ${subSize}px Arial, sans-serif`;
   ctx.textAlign = 'right';
   ctx.fillStyle = '#ffd23f';
   let rightText = tag;
   if (state.stars) rightText = (rightText ? rightText + '  ' : '') + '★★★★★';
+  while (rightText && ctx.measureText(rightText).width > W * 0.55 && subSize > 8) {
+    subSize *= 0.92;
+    ctx.font = `700 ${subSize}px Arial, sans-serif`;
+  }
   if (rightText) ctx.fillText(rightText, W - pad, bandY + bandH * 0.86);
   if (state.badge) {
     const b = 'LEONIDA';
